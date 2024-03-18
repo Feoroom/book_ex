@@ -1,0 +1,20 @@
+{{define "title"}} Update item {{end}}
+
+{{define "main"}}
+    <div class="tbl">
+
+<table>
+    <tr>
+        <th>Item</th>
+        <th>Price</th>
+    </tr>
+    {{range $item, $price := .}}
+        <tr>
+            <td><a href="/list?item={{$item}}">{{$item}}</a></td>
+            <td>{{$price}}</td>
+        </tr>
+    {{end}}
+</table>
+    </div>
+
+{{end}}

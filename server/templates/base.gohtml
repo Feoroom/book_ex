@@ -1,35 +1,21 @@
- <!doctype html>
-    <html lang='en'>
-    <head>
-        <meta charset='utf-8'>
-        <title>Main page</title>
-        <style>
-            table {
-                border: 2px solid black;
-                border-collapse: collapse;
-            }
 
-            th, td {
-                border: 2px solid black;
-                padding: 10px;
-            }
-        </style>
-    </head>
-    <body>
-        <header>
-            HELLO!
-            {{template "nav"}}
-        </header>
+{{define "base"}}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>{{template "title" .}}</title>
+    <link rel="stylesheet" href="/static/css/base.css">
+</head>
+<body>
 
-        <main>
-            <table>
-                {{range $key, $value := .}}
-                    <tr>
-                        <th>{{$key}}</th>
-                        <td>{{$value}}</td>
-                    </tr>
-                {{end}}
-            </table>
-        </main>
-    </body>
-    </html>
+<header>
+    {{template "nav" .}}
+</header>
+<main>
+    {{template "main" .}}
+</main>
+
+</body>
+</html>
+{{end}}

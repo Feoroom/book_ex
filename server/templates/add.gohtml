@@ -1,11 +1,6 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Add item</title>
-</head>
-<body>
-    {{template "nav"}}
+{{define "title"}} Add item{{end}}
+
+{{define "main"}}
     <form action="/add" method="post">
         <label for="item">Item</label>
         <input type="text" name="item" id="item"> <br>
@@ -13,6 +8,4 @@
         <input type="text" name="price" id="price"><br>
         <button type="submit">add</button>
     </form>
-
-</body>
-</html>
+{{end}}

@@ -1,0 +1,18 @@
+{{define "title"}} Item {{.}} {{end}}
+
+{{define "main"}}
+
+<div class="frm">
+    <h3>Укажите новую цену товара "{{.}}"</h3>
+
+    <form action="/list" method="post">
+
+        <input type="hidden" name="item" id="item" value="{{.}}" >
+        <label for="item">Цена</label>
+        <input type="text" name="price" id="item">
+        <button type="submit">Принять</button>
+
+    </form>
+</div>
+
+{{end}}
