@@ -5,13 +5,15 @@
 
 <table>
     <tr>
+        <th>ID</th>
         <th>Item</th>
         <th>Price</th>
     </tr>
-    {{range $item, $price := .}}
+    {{range .}}
         <tr>
-            <td><a href="/view?item={{$item}}">{{$item}}</a></td>
-            <td>{{$price}}</td>
+            <td>{{.ID}}</td>
+            <td><a href="/view?item={{.Name}}">{{.Name}}</a></td>
+            <td>{{.Price}}</td>
         </tr>
     {{end}}
 </table>

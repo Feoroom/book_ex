@@ -1,6 +1,8 @@
 package web
 
 import (
+	"book_ex/internal/models"
+	"errors"
 	"html/template"
 	"net/http"
 	"strconv"
@@ -71,7 +73,12 @@ func (app *Application) List(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	err = t.ExecuteTemplate(w, "base", nil)
+	items, err := app.Items.GetAll()
+	if err != nil {
+		app.serverError(w, err)
+		return
+	}
+	err = t.ExecuteTemplate(w, "base", items)
 	if err != nil {
 		app.serverError(w, err)
 		return
@@ -91,13 +98,28 @@ func (app *Application) View(w http.ResponseWriter, r *http.Request) {
 		//return
 	}
 
+	id, err := strconv.Atoi(r.URL.Query().Get("id"))
+	if err != nil || id < 0 {
+		app.notFound(w)
+		return
+	}
+
+	item, err := app.Items.Get(id)
+	if err != nil {
+		if errors.Is(err, models.ErrNoRecord) {
+			app.notFound(w)
+		} else {
+			app.serverError(w, err)
+		}
+		return
+	}
+
 	files := []string{
 		"ui/templates/base.gohtml",
 		"ui/templates/view_item.gohtml",
 		"ui/templates/partials/nav.gohtml",
 	}
 
-	item := r.URL.Query().Get("item")
 	t, err := template.ParseFiles(files...)
 	if err != nil {
 		app.serverError(w, err)

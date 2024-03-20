@@ -8,7 +8,7 @@ func (app *Application) Routes() *http.ServeMux {
 
 	mux := http.NewServeMux()
 
-	fileServer := http.FileServer(http.Dir("./server/static/"))
+	fileServer := http.FileServer(http.Dir("./ui/static/"))
 	mux.Handle("/static/", http.StripPrefix("/static", fileServer))
 
 	mux.HandleFunc("/list", app.List)

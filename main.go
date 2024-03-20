@@ -33,8 +33,8 @@ func main() {
 
 	//Application
 	app := &web.Application{
-		ErrorLog: infoLog,
-		InfoLog:  errorLog,
+		ErrorLog: errorLog,
+		InfoLog:  infoLog,
 		Items:    &models.ItemModel{DB: db},
 	}
 

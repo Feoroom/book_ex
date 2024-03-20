@@ -2,6 +2,7 @@ package models
 
 import (
 	"database/sql"
+	"errors"
 )
 
 type Item struct {
@@ -15,7 +16,24 @@ type ItemModel struct {
 }
 
 func (m *ItemModel) Get(id int) (*Item, error) {
-	return nil, nil
+
+	stmt := `SELECT id, name, price FROM items
+			WHERE id=$1`
+	row := m.DB.QueryRow(stmt, id)
+
+	item := &Item{}
+
+	err := row.Scan(&item.ID, &item.Name, &item.Price)
+	if err != nil {
+		if errors.Is(err, sql.ErrNoRows) {
+			return nil, ErrNoRecord
+		} else {
+			return nil, err
+		}
+	}
+
+	return item, nil
+
 }
 
 func (m *ItemModel) Insert(name string, price int) (int, error) {
@@ -31,5 +49,31 @@ func (m *ItemModel) Insert(name string, price int) (int, error) {
 }
 
 func (m *ItemModel) GetAll() ([]*Item, error) {
-	return nil, nil
+
+	stmt := `SELECT id, name, price FROM items
+			ORDER BY id`
+	rows, err := m.DB.Query(stmt)
+	if err != nil {
+		return nil, err
+	}
+
+	defer rows.Close()
+
+	items := []*Item{}
+
+	for rows.Next() {
+
+		item := &Item{}
+
+		err = rows.Scan(&item.ID, &item.Name, &item.Price)
+		if err != nil {
+			return nil, err
+		}
+		items = append(items, item)
+	}
+
+	if err = rows.Err(); err != nil {
+		return nil, err
+	}
+	return items, nil
 }
