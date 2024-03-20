@@ -10,7 +10,7 @@
     </tr>
     {{range $item, $price := .}}
         <tr>
-            <td><a href="/list?item={{$item}}">{{$item}}</a></td>
+            <td><a href="/view?item={{$item}}">{{$item}}</a></td>
             <td>{{$price}}</td>
         </tr>
     {{end}}
