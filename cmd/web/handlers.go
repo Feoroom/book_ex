@@ -86,18 +86,6 @@ func (app *Application) List(w http.ResponseWriter, r *http.Request) {
 }
 
 func (app *Application) View(w http.ResponseWriter, r *http.Request) {
-	if r.Method == http.MethodPost {
-		//item := r.FormValue("item")
-		//price, err := strconv.Atoi(r.FormValue("price"))
-		//if err != nil {
-		//	app.notFound(w)
-		//	return
-		//}
-		////app.DB[item] = price
-		//http.Redirect(w, r, "/list", http.StatusSeeOther)
-		//return
-	}
-
 	id, err := strconv.Atoi(r.URL.Query().Get("id"))
 	if err != nil || id < 0 {
 		app.notFound(w)

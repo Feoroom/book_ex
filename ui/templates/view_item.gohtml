@@ -1,18 +1,23 @@
-{{define "title"}} Item {{.Name}} {{end}}
+{{define "title"}} Item #{{.Name}} {{end}}
 
 {{define "main"}}
 
-<div class="frm">
-    <h3>Укажите новую цену товара "{{.Name}}"</h3>
+    <div class="item">
+        <div class="hdr">
+            <span>{{.Name}}</span>
+            <span>#{{.ID}}</span>
+        </div>
 
-    <form action="/view" method="post">
+        <div class="dscr">
+            <p>
+                Lorem ipsum dolor sit amet, consectetur adipisicing elit. Laborum
+                saepe excepturi qui accusamus quos veritatis dolorum magni fuga
+                obcaecati, necessitatibus consequatur odit totam eos maiores
+                distinctio? Officia iure eaque aliquam!
+            </p>
+        </div>
 
-        <input type="hidden" name="item" id="item" value="{{.}}" >
-        <label for="item">Цена</label>
-        <input type="text" name="price" id="item">
-        <button type="submit">Принять</button>
-
-    </form>
-</div>
+        <div class="itm-ftr">empty</div>
+    </div>
 
 {{end}}
