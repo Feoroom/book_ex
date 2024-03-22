@@ -1,6 +1,7 @@
 package web
 
 import (
+	"bytes"
 	"fmt"
 	"net/http"
 	"runtime/debug"
@@ -22,7 +23,7 @@ func (app *Application) notFound(w http.ResponseWriter) {
 	app.clientError(w, http.StatusNotFound)
 }
 
-func (app *Application) render(w http.ResponseWriter, status int, page string, data *templateData) {
+func (app *Application) render(w http.ResponseWriter, status int, page string, data *TemplateData) {
 
 	t, ok := app.TemplateCache[page]
 	if !ok {
@@ -31,10 +32,15 @@ func (app *Application) render(w http.ResponseWriter, status int, page string, d
 		return
 	}
 
-	w.WriteHeader(status)
+	buf := new(bytes.Buffer)
 
-	err := t.ExecuteTemplate(w, "base", data)
+	err := t.ExecuteTemplate(buf, "base", data)
 	if err != nil {
 		app.serverError(w, err)
 	}
+
+	w.WriteHeader(status)
+
+	buf.WriteTo(w)
+
 }

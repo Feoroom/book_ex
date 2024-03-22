@@ -2,12 +2,14 @@
 @import "pages/view.css";
 @import "pages/list.css";
 @import "pages/add.css";
+@import "pages/home.css";
 @import "partials/nav.css";
 
 
 body {
     margin: 0;
-    height: 90vh;
+    height: 98vh;
+    color: white;
 }
 
 /*
@@ -45,13 +47,21 @@ FOOTER
 
 */
 
+footer {
+    background-color: rgb(91, 145, 210);
+}
+
+footer p {
+    margin: 0;
+    padding: 5px 20px;
+    text-align: right;
+}
 
 .ftr {
     display: flex;
 
     justify-content: center;
     align-items: center;
-    background-color: rgb(91, 145, 210);
     margin: 0;
 
     padding: 0;

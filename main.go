@@ -41,7 +41,7 @@ func main() {
 	app := &web.Application{
 		ErrorLog:      errorLog,
 		InfoLog:       infoLog,
-		Items:         &models.ItemModel{DB: db},
+		Items:         &models.Model{DB: db},
 		TemplateCache: templCache,
 	}
 

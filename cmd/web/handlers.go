@@ -38,7 +38,8 @@ func (app *Application) Add(w http.ResponseWriter, r *http.Request) {
 		http.Redirect(w, r, "/list", http.StatusSeeOther)
 		return
 	}
-	app.render(w, http.StatusOK, "add.gohtml", nil)
+
+	app.render(w, http.StatusOK, "add.gohtml", app.NewTemplateData())
 
 }
 
@@ -49,7 +50,10 @@ func (app *Application) List(w http.ResponseWriter, r *http.Request) {
 		app.serverError(w, err)
 		return
 	}
-	app.render(w, http.StatusOK, "list.gohtml", &templateData{Items: items})
+
+	data := app.NewTemplateData()
+	data.Items = items
+	app.render(w, http.StatusOK, "list.gohtml", data)
 }
 
 func (app *Application) View(w http.ResponseWriter, r *http.Request) {
@@ -69,7 +73,10 @@ func (app *Application) View(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	app.render(w, http.StatusOK, "view_item.gohtml", &templateData{Item: item})
+	data := app.NewTemplateData()
+	data.Item = item
+
+	app.render(w, http.StatusOK, "view_item.gohtml", data)
 
 	return
 }
@@ -80,5 +87,7 @@ func (app *Application) Home(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	app.render(w, http.StatusOK, "home.gohtml", nil)
+	data := app.NewTemplateData()
+
+	app.render(w, http.StatusOK, "home.gohtml", data)
 }

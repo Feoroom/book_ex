@@ -11,6 +11,6 @@ type Database map[string]int
 type Application struct {
 	ErrorLog      *log.Logger
 	InfoLog       *log.Logger
-	Items         *models.ItemModel
+	Items         *models.Model
 	TemplateCache map[string]*template.Template
 }

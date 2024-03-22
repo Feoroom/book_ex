@@ -4,11 +4,17 @@ import (
 	"book_ex/internal/models"
 	"html/template"
 	"path/filepath"
+	"time"
 )
 
-type templateData struct {
-	Item  *models.Item
-	Items []*models.Item
+type TemplateData struct {
+	Item        *models.Item
+	Items       []*models.Item
+	CurrentYear int
+}
+
+var functions = template.FuncMap{
+	"humanDate": humanDate,
 }
 
 func NewTemplateCache() (map[string]*template.Template, error) {
@@ -23,7 +29,7 @@ func NewTemplateCache() (map[string]*template.Template, error) {
 	for _, page := range pages {
 		name := filepath.Base(page)
 
-		t, err := template.ParseFiles("./ui/templates/base.gohtml")
+		t, err := template.New(name).Funcs(functions).ParseFiles("./ui/templates/base.gohtml")
 		if err != nil {
 			return nil, err
 		}
@@ -42,5 +48,14 @@ func NewTemplateCache() (map[string]*template.Template, error) {
 	}
 
 	return cache, nil
+}
 
+func (app *Application) NewTemplateData() *TemplateData {
+	return &TemplateData{
+		CurrentYear: time.Now().Year(),
+	}
+}
+
+func humanDate(t time.Time) string {
+	return t.Format("02 Jan 2006 at 15:04")
 }
