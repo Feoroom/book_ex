@@ -1,0 +1,24 @@
+
+.frm * {
+    margin: 2px;
+}
+
+.frm input,
+.frm button {
+    padding: 3px;
+}
+
+.frm {
+    display: flex;
+
+    flex-direction: column;
+
+    justify-content: space-between;
+    border: 2px solid #2f507e;
+    border-radius: 20px;
+    background-color: #569acb;
+    padding: 40px;
+
+    color: white;
+
+}

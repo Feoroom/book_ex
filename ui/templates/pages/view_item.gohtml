@@ -1,7 +1,7 @@
-{{define "title"}} Item #{{.Name}} {{end}}
+{{define "title"}} Item #{{.Item.Name}} {{end}}
 
 {{define "main"}}
-
+{{with .Item}}
     <div class="item">
         <div class="hdr">
             <span>{{.Name}}</span>
@@ -19,5 +19,5 @@
 
         <div class="itm-ftr">empty</div>
     </div>
-
+{{end}}
 {{end}}

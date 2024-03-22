@@ -33,7 +33,26 @@ func (m *ItemModel) Get(id int) (*Item, error) {
 	}
 
 	return item, nil
+}
 
+func (m *ItemModel) GetByName(name string) (*Item, error) {
+
+	stmt := `SELECT id, name, price FROM items
+			WHERE name=$1`
+
+	row := m.DB.QueryRow(stmt, name)
+
+	item := &Item{}
+	err := row.Scan(&item.ID, &item.Name, &item.Price)
+	if err != nil {
+		if errors.Is(err, sql.ErrNoRows) {
+			return nil, ErrNoRecord
+		} else {
+			return nil, err
+		}
+	}
+
+	return item, nil
 }
 
 func (m *ItemModel) Insert(name string, price int) (int, error) {

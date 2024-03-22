@@ -3,7 +3,6 @@ package web
 import (
 	"book_ex/internal/models"
 	"errors"
-	"html/template"
 	"net/http"
 	"strconv"
 )
@@ -39,50 +38,18 @@ func (app *Application) Add(w http.ResponseWriter, r *http.Request) {
 		http.Redirect(w, r, "/list", http.StatusSeeOther)
 		return
 	}
-
-	files := []string{
-		"ui/templates/base.gohtml",
-		"ui/templates/add.gohtml",
-		"ui/templates/partials/nav.gohtml",
-	}
-
-	t, err := template.ParseFiles(files...)
-	if err != nil {
-		app.serverError(w, err)
-		return
-	}
-	err = t.ExecuteTemplate(w, "base", nil)
-	if err != nil {
-		app.serverError(w, err)
-		return
-	}
+	app.render(w, http.StatusOK, "add.gohtml", nil)
 
 }
 
 func (app *Application) List(w http.ResponseWriter, r *http.Request) {
-
-	files := []string{
-		"ui/templates/base.gohtml",
-		"ui/templates/list.gohtml",
-		"ui/templates/partials/nav.gohtml",
-	}
-
-	t, err := template.ParseFiles(files...)
-	if err != nil {
-		app.serverError(w, err)
-		return
-	}
 
 	items, err := app.Items.GetAll()
 	if err != nil {
 		app.serverError(w, err)
 		return
 	}
-	err = t.ExecuteTemplate(w, "base", items)
-	if err != nil {
-		app.serverError(w, err)
-		return
-	}
+	app.render(w, http.StatusOK, "list.gohtml", &templateData{Items: items})
 }
 
 func (app *Application) View(w http.ResponseWriter, r *http.Request) {
@@ -102,23 +69,7 @@ func (app *Application) View(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	files := []string{
-		"ui/templates/base.gohtml",
-		"ui/templates/view_item.gohtml",
-		"ui/templates/partials/nav.gohtml",
-	}
-
-	t, err := template.ParseFiles(files...)
-	if err != nil {
-		app.serverError(w, err)
-		return
-	}
-
-	err = t.ExecuteTemplate(w, "base", item)
-	if err != nil {
-		app.serverError(w, err)
-		return
-	}
+	app.render(w, http.StatusOK, "view_item.gohtml", &templateData{Item: item})
 
 	return
 }
@@ -129,20 +80,5 @@ func (app *Application) Home(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	files := []string{
-		"ui/templates/base.gohtml",
-		"ui/templates/home.gohtml",
-		"ui/templates/partials/nav.gohtml",
-	}
-
-	t, err := template.ParseFiles(files...)
-	if err != nil {
-		app.serverError(w, err)
-		return
-	}
-
-	err = t.ExecuteTemplate(w, "base", nil)
-	if err != nil {
-		app.serverError(w, err)
-	}
+	app.render(w, http.StatusOK, "home.gohtml", nil)
 }

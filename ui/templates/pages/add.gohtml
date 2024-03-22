@@ -1,0 +1,11 @@
+{{define "title"}} Add item{{end}}
+
+{{define "main"}}
+    <form action="/add" method="post" class="frm">
+        <label for="item">Item</label>
+        <input type="text" name="item" id="item" placeholder="Введите название"> <br>
+        <label for="price">Price</label>
+        <input type="text" name="price" id="price" placeholder="Введите цену"><br>
+        <button type="submit">add</button>
+    </form>
+{{end}}

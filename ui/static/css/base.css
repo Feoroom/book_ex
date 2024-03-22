@@ -1,8 +1,13 @@
-@import "view.css";
+
+@import "pages/view.css";
+@import "pages/list.css";
+@import "pages/add.css";
+@import "partials/nav.css";
+
 
 body {
     margin: 0;
-    height: 100vh;
+    height: 90vh;
 }
 
 /*
@@ -11,33 +16,7 @@ HEADER
 
 
 header {
-    background-color: rgba(69, 135, 161, 0.85);
-}
-
-nav {
-}
-
-nav ul {
-    display: flex;
-
-    /*justify-content: space-around;*/
-    justify-content: center;
-    padding: 0;
-    margin: 0;
-}
-
-nav li {
-    list-style-type: none;
-    padding: 20px;
-}
-
-nav a {
-    text-decoration: none;
-    color: white;
-}
-
-nav a:hover {
-    color: #13304f;
+    background-color: rgb(91, 145, 210);
 }
 
 /*
@@ -46,56 +25,9 @@ MAIN
 
 */
 
-table {
-    border: 1px solid black;
-    border-collapse: collapse;
 
-    background-color: #569acb;
-}
 
-td,
-th {
-    border: 2px solid black;
-    padding: 20px 80px;
-    text-align: center;
 
-    color: white;
-}
-
-.tbl {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-
-    margin-top: 300px;
-}
-
-.tbl a {
-    /*text-decoration: none;*/
-    color: white;
-}
-
-.tbl a:hover {
-    color: #13304f;
-}
-
-.frm {
-    border: 2px solid black;
-    border-radius: 20px;
-    background-color: #569acb;
-    padding: 40px;
-
-    color: white;
-
-}
-
-.frm form {
-    padding: 30px;
-}
-
-.frm h3 {
-    text-align: center;
-}
 
 main {
     display: flex;
@@ -103,8 +35,41 @@ main {
     justify-content: center;
     align-items: center;
 
-    height: 50%;
+    height: 90%;
+    background-color: rgb(185, 218, 253);
 }
 
+/*
+
+FOOTER
+
+*/
+
+
+.ftr {
+    display: flex;
+
+    justify-content: center;
+    align-items: center;
+    background-color: rgb(91, 145, 210);
+    margin: 0;
+
+    padding: 0;
+}
+
+.ftr li {
+    list-style-type: none;
+    padding: 20px;
+}
+
+.ftr a {
+    text-decoration: none;
+    color: white;
+}
+
+.ftr a:hover {
+    color: #13304f;
+
+}
 
 

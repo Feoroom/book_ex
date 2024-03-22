@@ -31,11 +31,18 @@ func main() {
 
 	defer db.Close()
 
+	//Initializing the template cache
+	templCache, err := web.NewTemplateCache()
+	if err != nil {
+		errorLog.Fatal(err)
+	}
+
 	//Application
 	app := &web.Application{
-		ErrorLog: errorLog,
-		InfoLog:  infoLog,
-		Items:    &models.ItemModel{DB: db},
+		ErrorLog:      errorLog,
+		InfoLog:       infoLog,
+		Items:         &models.ItemModel{DB: db},
+		TemplateCache: templCache,
 	}
 
 	//Server struct
