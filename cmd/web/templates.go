@@ -10,6 +10,8 @@ import (
 type TemplateData struct {
 	Item        *models.Item
 	Items       []*models.Item
+	Review      *models.Review
+	Reviews     []*models.Review
 	CurrentYear int
 }
 

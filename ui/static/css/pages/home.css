@@ -1,0 +1,28 @@
+
+.show-rv {
+    display: flex;
+    flex-direction: column;
+
+    align-items: center;
+    justify-content: center;
+}
+
+.rev{
+    background-color: #13304f;
+    width: 30%;
+
+    border-radius: 10px;
+}
+
+.rv-main {
+    padding: 20px;
+}
+
+.rv-hdr,
+.rv-ftr{
+    background-color: #345485;
+    padding: 20px;
+
+}
+
+

@@ -11,11 +11,11 @@ type Item struct {
 	Price int
 }
 
-type Model struct {
+type ItemModel struct {
 	DB *sql.DB
 }
 
-func (m *Model) Get(id int) (*Item, error) {
+func (m *ItemModel) Get(id int) (*Item, error) {
 
 	stmt := `SELECT id, name, price FROM items
 			WHERE id=$1`
@@ -35,7 +35,7 @@ func (m *Model) Get(id int) (*Item, error) {
 	return item, nil
 }
 
-func (m *Model) GetByName(name string) (*Item, error) {
+func (m *ItemModel) GetByName(name string) (*Item, error) {
 
 	stmt := `SELECT id, name, price FROM items
 			WHERE name=$1`
@@ -55,7 +55,7 @@ func (m *Model) GetByName(name string) (*Item, error) {
 	return item, nil
 }
 
-func (m *Model) Insert(name string, price int) (int, error) {
+func (m *ItemModel) Insert(name string, price int) (int, error) {
 	stmt := `insert into items (name, price)
 			values ($1, $2) RETURNING id`
 	id := 0
@@ -67,7 +67,7 @@ func (m *Model) Insert(name string, price int) (int, error) {
 	return int(id), nil
 }
 
-func (m *Model) GetAll() ([]*Item, error) {
+func (m *ItemModel) GetAll() ([]*Item, error) {
 
 	stmt := `SELECT id, name, price FROM items
 			ORDER BY id`

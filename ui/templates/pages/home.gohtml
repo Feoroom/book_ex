@@ -2,8 +2,25 @@
 
 {{define "main"}}
 
-    <div class="content">
-        <h2>Добро пожаловать на главную страницу!</h2>
+
+    <div class="show-rv">
+
+        {{range .Reviews}}
+            <div class="rev">
+                <div class="rv-hdr">
+                    <span>Title: {{.Title}}</span>
+                    <span>ID: {{.ID}}</span>
+                </div>
+
+                <div class="rv-main">
+                    <p>{{.Text}}</p>
+                </div>
+
+                <div class="rv-ftr">
+                    Published: {{.Published}}
+                </div>
+            </div>
+        {{end}}
     </div>
 
 {{end}}

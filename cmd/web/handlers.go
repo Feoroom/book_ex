@@ -7,20 +7,6 @@ import (
 	"strconv"
 )
 
-//func (app *Application) Price(w http.ResponseWriter, r *http.Request) {
-//	item := r.URL.Query().Get("item")
-//
-//	//price, ok := app.DB[item]
-//	if !ok {
-//		w.WriteHeader(http.StatusNotFound)
-//		app.InfoLog.Printf("No such item: ", item)
-//		return
-//	}
-//
-//	fmt.Fprintf(w, "%d\n", price)
-//
-//}
-
 func (app *Application) Add(w http.ResponseWriter, r *http.Request) {
 	if r.Method == http.MethodPost {
 		item := r.FormValue("item")
@@ -86,8 +72,18 @@ func (app *Application) Home(w http.ResponseWriter, r *http.Request) {
 		app.notFound(w)
 		return
 	}
+	reviews, err := app.Reviews.GetAll()
+	if err != nil {
+		app.serverError(w, err)
+		return
+	}
 
 	data := app.NewTemplateData()
+	data.Reviews = reviews
 
 	app.render(w, http.StatusOK, "home.gohtml", data)
+}
+
+func (app *Application) Review(w http.ResponseWriter, r *http.Request) {
+
 }
