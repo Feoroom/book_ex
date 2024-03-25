@@ -8,17 +8,48 @@
     padding: 3px;
 }
 
-.frm {
+input[type="text"] {
+    width: 200px;
+}
+
+#text {
+    min-width: 600px;
+    min-height: 200px;
+}
+
+.error {
+    color: #EF9A9A;
+    /*background-color: white;*/
+}
+
+input,
+textarea {
+    border-radius: 5px;
+}
+
+.error + textarea,
+.error + input {
+    border: 3px solid #EF9A9A;
+}
+
+.frm button {
+    width: 100px;
+    padding: 5px;
+}
+
+.frm form {
     display: flex;
 
     flex-direction: column;
 
     justify-content: space-between;
+}
+
+.frm {
     border: 2px solid #2f507e;
     border-radius: 20px;
-    background-color: #569acb;
+    background-color: #235789;
     padding: 40px;
 
     color: white;
-
 }

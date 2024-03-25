@@ -5,6 +5,7 @@ import (
 	"book_ex/internal/models"
 	"database/sql"
 	"flag"
+	"github.com/go-playground/form/v4"
 	_ "github.com/lib/pq"
 	"log"
 	"net/http"
@@ -37,6 +38,10 @@ func main() {
 		errorLog.Fatal(err)
 	}
 
+	//Form decoder
+
+	formDecoder := form.NewDecoder()
+
 	//Application
 	app := &web.Application{
 		ErrorLog:      errorLog,
@@ -44,6 +49,7 @@ func main() {
 		Items:         &models.ItemModel{DB: db},
 		Reviews:       &models.ReviewModel{DB: db},
 		TemplateCache: templCache,
+		FormDecoder:   formDecoder,
 	}
 
 	//Server struct

@@ -1,11 +1,20 @@
 {{define "title"}} Add item{{end}}
 
 {{define "main"}}
-    <form action="/add" method="post" class="frm">
-        <label for="item">Item</label>
-        <input type="text" name="item" id="item" placeholder="Введите название"> <br>
-        <label for="price">Price</label>
-        <input type="text" name="price" id="price" placeholder="Введите цену"><br>
-        <button type="submit">add</button>
-    </form>
+    <div class="frm">
+        <form action="/add" method="post">
+            <label for="title">Заголовок</label>
+            {{with .Form.FieldErrors.title}}
+                <label for="title" class="error">{{.}}</label>
+            {{end}}
+            <input type="text" name="title" id="title" placeholder="Введите заголовок обзора" value="{{.Form.Title}}"> <br>
+            <label for="text">Ваш обзор</label>
+            {{with .Form.FieldErrors.text}}
+                <label for="text" class="error">{{.}}</label>
+            {{end}}
+            <textarea name="text" id="text">{{.Form.Text}}</textarea><br>
+            <button type="submit">Отправить</button>
+        </form>
+    </div>
+
 {{end}}

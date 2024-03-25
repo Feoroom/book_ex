@@ -62,3 +62,14 @@ func (rm *ReviewModel) GetAll() ([]*Review, error) {
 
 	return reviews, nil
 }
+
+func (rm *ReviewModel) Insert(title, text string) (int, error) {
+
+	id := 0
+	err := rm.DB.QueryRow(`insert into reviews (title, text, published)
+			values ($1, $2, now()) returning id`, title, text).Scan(&id)
+	if err != nil {
+		return 0, err
+	}
+	return id, nil
+}

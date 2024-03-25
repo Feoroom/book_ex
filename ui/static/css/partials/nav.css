@@ -1,4 +1,5 @@
 nav {
+    margin-right: 40%;
 }
 
 nav ul {
@@ -21,5 +22,5 @@ nav a {
 }
 
 nav a:hover {
-    color: #13304f;
+    color: #76E5FC;
 }

@@ -2,7 +2,9 @@ package web
 
 import (
 	"bytes"
+	"errors"
 	"fmt"
+	"github.com/go-playground/form/v4"
 	"net/http"
 	"runtime/debug"
 )
@@ -37,10 +39,31 @@ func (app *Application) render(w http.ResponseWriter, status int, page string, d
 	err := t.ExecuteTemplate(buf, "base", data)
 	if err != nil {
 		app.serverError(w, err)
+		return
 	}
 
 	w.WriteHeader(status)
 
 	buf.WriteTo(w)
 
+}
+
+func (app *Application) decodePostForm(r *http.Request, dest any) error {
+
+	err := r.ParseForm()
+	if err != nil {
+		return err
+	}
+
+	err = app.FormDecoder.Decode(dest, r.PostForm)
+	if err != nil {
+		var invalidDecErr *form.InvalidDecoderError
+
+		if errors.As(err, &invalidDecErr) {
+			panic(err)
+		}
+		return err
+	}
+
+	return nil
 }

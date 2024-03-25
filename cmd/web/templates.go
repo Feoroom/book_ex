@@ -13,6 +13,7 @@ type TemplateData struct {
 	Review      *models.Review
 	Reviews     []*models.Review
 	CurrentYear int
+	Form        any
 }
 
 var functions = template.FuncMap{
@@ -55,6 +56,7 @@ func NewTemplateCache() (map[string]*template.Template, error) {
 func (app *Application) NewTemplateData() *TemplateData {
 	return &TemplateData{
 		CurrentYear: time.Now().Year(),
+		//Form:        ReviewCreateForm{},
 	}
 }
 

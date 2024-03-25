@@ -10,17 +10,22 @@
 .rev{
     background-color: #13304f;
     width: 30%;
-
+    min-width: 300px;
     border-radius: 10px;
+
+    margin: 30px;
 }
 
 .rv-main {
-    padding: 20px;
+    padding: 0 20px;
+    overflow: auto;
+    height: 350px;
+
 }
 
 .rv-hdr,
 .rv-ftr{
-    background-color: #345485;
+    background-color: #235789;
     padding: 20px;
 
 }

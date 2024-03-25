@@ -5,20 +5,50 @@
 @import "pages/home.css";
 @import "partials/nav.css";
 
+@import url('https://fonts.googleapis.com/css2?family=Comfortaa:wght@300..700&family=Bellota+Text:ital,wght@0,300;0,400;0,700;1,300;1,400;1,700&family=Poiret+One&display=swap');
+
+html{
+    height: 100vh;
+}
 
 body {
     margin: 0;
-    height: 98vh;
+    min-height: 100%;
     color: white;
+
+    font-family: Bellota Text, serif;
 }
 
 /*
 HEADER
 */
 
+header,
+footer {
+    /*background-color: rgb(91, 145, 210);*/
+    background-color: #235789;
+}
 
 header {
-    background-color: rgb(91, 145, 210);
+    display: flex;
+    justify-content: space-between;
+}
+
+header h3 {
+    color: #ffffff;
+    margin: 0;
+    font-weight: bold;
+}
+
+header img {
+    height: 40px;
+}
+
+.hd {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-left: 40px;
 }
 
 /*
@@ -27,18 +57,16 @@ MAIN
 
 */
 
-
-
-
-
 main {
     display: flex;
 
     justify-content: center;
     align-items: center;
 
-    height: 90%;
-    background-color: rgb(185, 218, 253);
+    min-height: 90vh;
+    /*background-color: rgb(185, 218, 253);*/
+    /*background-color: #97D2FB;*/
+background-color: #76E5FC;
 }
 
 /*
@@ -48,13 +76,17 @@ FOOTER
 */
 
 footer {
-    background-color: rgb(91, 145, 210);
+
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
 }
 
 footer p {
     margin: 0;
     padding: 5px 20px;
     text-align: right;
+
 }
 
 .ftr {
@@ -78,7 +110,7 @@ footer p {
 }
 
 .ftr a:hover {
-    color: #13304f;
+    color: #76E5FC;
 
 }
 

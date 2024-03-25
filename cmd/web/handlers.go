@@ -2,31 +2,55 @@ package web
 
 import (
 	"book_ex/internal/models"
+	"book_ex/internal/validator"
 	"errors"
+	"github.com/julienschmidt/httprouter"
 	"net/http"
 	"strconv"
 )
 
+type ReviewCreateForm struct {
+	Title               string `form:"title"`
+	Text                string `form:"text"`
+	validator.Validator `form:"-"`
+}
+
 func (app *Application) Add(w http.ResponseWriter, r *http.Request) {
-	if r.Method == http.MethodPost {
-		item := r.FormValue("item")
-		price, err := strconv.Atoi(r.FormValue("price"))
-		if err != nil {
-			app.ErrorLog.Println(err.Error())
-			return
-		}
-		id, err := app.Items.Insert(item, price)
-		if err != nil {
-			app.serverError(w, err)
-			return
-		}
-		app.InfoLog.Printf("Id of inserted item is %d", id)
-		http.Redirect(w, r, "/list", http.StatusSeeOther)
+	data := app.NewTemplateData()
+	data.Form = ReviewCreateForm{}
+	app.render(w, http.StatusOK, "add.gohtml", data)
+}
+
+func (app *Application) AddPost(w http.ResponseWriter, r *http.Request) {
+
+	var form ReviewCreateForm
+
+	err := app.decodePostForm(r, &form)
+	if err != nil {
+		app.clientError(w, http.StatusBadRequest)
+	}
+
+	//Validation check
+	form.CheckFields(validator.NotBlank(form.Title), "title", "Это поле не может быть пустым")
+	form.CheckFields(validator.MaxChars(form.Title, 30), "title", "Длина этого поля должны быть не больше 30 символов")
+	form.CheckFields(validator.NotBlank(form.Text), "text", "Это поле не может быть пустым")
+
+	if !form.Valid() {
+		app.InfoLog.Println(form.FieldErrors)
+		data := app.NewTemplateData()
+		data.Form = form
+		app.render(w, http.StatusUnprocessableEntity, "add.gohtml", data)
 		return
 	}
 
-	app.render(w, http.StatusOK, "add.gohtml", app.NewTemplateData())
+	id, err := app.Reviews.Insert(form.Title, form.Text)
+	if err != nil {
+		app.serverError(w, err)
+		return
+	}
 
+	app.InfoLog.Printf("Id of inserted item is %d", id)
+	http.Redirect(w, r, "/", http.StatusSeeOther)
 }
 
 func (app *Application) List(w http.ResponseWriter, r *http.Request) {
@@ -43,7 +67,10 @@ func (app *Application) List(w http.ResponseWriter, r *http.Request) {
 }
 
 func (app *Application) View(w http.ResponseWriter, r *http.Request) {
-	id, err := strconv.Atoi(r.URL.Query().Get("id"))
+	params := httprouter.ParamsFromContext(r.Context())
+
+	id, err := strconv.Atoi(params.ByName("id"))
+	app.InfoLog.Println(id)
 	if err != nil || id < 0 {
 		app.notFound(w)
 		return
@@ -68,10 +95,7 @@ func (app *Application) View(w http.ResponseWriter, r *http.Request) {
 }
 
 func (app *Application) Home(w http.ResponseWriter, r *http.Request) {
-	if r.URL.Path != "/" {
-		app.notFound(w)
-		return
-	}
+
 	reviews, err := app.Reviews.GetAll()
 	if err != nil {
 		app.serverError(w, err)

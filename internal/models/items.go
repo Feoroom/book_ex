@@ -64,7 +64,7 @@ func (m *ItemModel) Insert(name string, price int) (int, error) {
 		return 0, err
 	}
 
-	return int(id), nil
+	return id, nil
 }
 
 func (m *ItemModel) GetAll() ([]*Item, error) {
