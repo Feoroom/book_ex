@@ -5,13 +5,16 @@ import (
 	"book_ex/internal/models"
 	"database/sql"
 	"flag"
+	"github.com/alexedwards/scs/v2"
 	"github.com/go-playground/form/v4"
 	_ "github.com/lib/pq"
 	"log"
 	"net/http"
 	"os"
+	"time"
 )
 
+// TODO: Add Session Store
 func main() {
 
 	//Command-line flags
@@ -42,14 +45,21 @@ func main() {
 
 	formDecoder := form.NewDecoder()
 
+	//Session manager
+	sessionManager := scs.New()
+	//sessionManager.Store = pqstore.New(db)
+	sessionManager.Lifetime = time.Hour
+	sessionManager.Cookie.Secure = true
+
 	//Application
 	app := &web.Application{
-		ErrorLog:      errorLog,
-		InfoLog:       infoLog,
-		Items:         &models.ItemModel{DB: db},
-		Reviews:       &models.ReviewModel{DB: db},
-		TemplateCache: templCache,
-		FormDecoder:   formDecoder,
+		ErrorLog:       errorLog,
+		InfoLog:        infoLog,
+		Items:          &models.ItemModel{DB: db},
+		Reviews:        &models.ReviewModel{DB: db},
+		TemplateCache:  templCache,
+		FormDecoder:    formDecoder,
+		SessionManager: sessionManager,
 	}
 
 	//Server struct
@@ -60,7 +70,7 @@ func main() {
 	}
 
 	infoLog.Printf("Starting server on: %s", *addr)
-	err = srv.ListenAndServe()
+	err = srv.ListenAndServeTLS("./tls/cert.pem", "./tls/key.pem")
 	errorLog.Fatal(err)
 }
 

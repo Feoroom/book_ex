@@ -3,6 +3,7 @@ package web
 import (
 	"book_ex/internal/models"
 	"html/template"
+	"net/http"
 	"path/filepath"
 	"time"
 )
@@ -14,6 +15,7 @@ type TemplateData struct {
 	Reviews     []*models.Review
 	CurrentYear int
 	Form        any
+	Flash       string
 }
 
 var functions = template.FuncMap{
@@ -53,10 +55,11 @@ func NewTemplateCache() (map[string]*template.Template, error) {
 	return cache, nil
 }
 
-func (app *Application) NewTemplateData() *TemplateData {
+func (app *Application) NewTemplateData(r *http.Request) *TemplateData {
 	return &TemplateData{
 		CurrentYear: time.Now().Year(),
 		//Form:        ReviewCreateForm{},
+		Flash: app.SessionManager.PopString(r.Context(), "add"),
 	}
 }
 

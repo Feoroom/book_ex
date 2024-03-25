@@ -4,7 +4,9 @@
 
 
     <div class="show-rv">
-
+        {{with .Flash}}
+            <div class="flash">{{.}}</div>
+        {{end}}
         {{range .Reviews}}
             <div class="rev">
                 <div class="rv-hdr">

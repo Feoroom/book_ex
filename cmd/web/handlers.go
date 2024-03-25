@@ -16,7 +16,7 @@ type ReviewCreateForm struct {
 }
 
 func (app *Application) Add(w http.ResponseWriter, r *http.Request) {
-	data := app.NewTemplateData()
+	data := app.NewTemplateData(r)
 	data.Form = ReviewCreateForm{}
 	app.render(w, http.StatusOK, "add.gohtml", data)
 }
@@ -37,7 +37,7 @@ func (app *Application) AddPost(w http.ResponseWriter, r *http.Request) {
 
 	if !form.Valid() {
 		app.InfoLog.Println(form.FieldErrors)
-		data := app.NewTemplateData()
+		data := app.NewTemplateData(r)
 		data.Form = form
 		app.render(w, http.StatusUnprocessableEntity, "add.gohtml", data)
 		return
@@ -48,6 +48,8 @@ func (app *Application) AddPost(w http.ResponseWriter, r *http.Request) {
 		app.serverError(w, err)
 		return
 	}
+
+	app.SessionManager.Put(r.Context(), "add", "Рецензия успешно создана!")
 
 	app.InfoLog.Printf("Id of inserted item is %d", id)
 	http.Redirect(w, r, "/", http.StatusSeeOther)
@@ -61,7 +63,7 @@ func (app *Application) List(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	data := app.NewTemplateData()
+	data := app.NewTemplateData(r)
 	data.Items = items
 	app.render(w, http.StatusOK, "list.gohtml", data)
 }
@@ -86,7 +88,7 @@ func (app *Application) View(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	data := app.NewTemplateData()
+	data := app.NewTemplateData(r)
 	data.Item = item
 
 	app.render(w, http.StatusOK, "view_item.gohtml", data)
@@ -102,9 +104,9 @@ func (app *Application) Home(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	data := app.NewTemplateData()
+	data := app.NewTemplateData(r)
 	data.Reviews = reviews
-
+	//data.Flash = app.SessionManager.PopString(r.Context(), "add")
 	app.render(w, http.StatusOK, "home.gohtml", data)
 }
 
