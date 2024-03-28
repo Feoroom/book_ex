@@ -2,8 +2,8 @@
 
 {{define "main"}}
     <div class="frm">
-        <form action="/add" method="post">
-            <label for="title">Заголовок</label>
+        <form action="/review/create" method="post">
+            <label for="title"></label>
             {{with .Form.FieldErrors.title}}
                 <label for="title" class="error">{{.}}</label>
             {{end}}

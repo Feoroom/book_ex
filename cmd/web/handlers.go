@@ -9,19 +9,13 @@ import (
 	"strconv"
 )
 
-type ReviewCreateForm struct {
-	Title               string `form:"title"`
-	Text                string `form:"text"`
-	validator.Validator `form:"-"`
-}
-
-func (app *Application) Add(w http.ResponseWriter, r *http.Request) {
+func (app *Application) Create(w http.ResponseWriter, r *http.Request) {
 	data := app.NewTemplateData(r)
 	data.Form = ReviewCreateForm{}
-	app.render(w, http.StatusOK, "add.gohtml", data)
+	app.render(w, http.StatusOK, "create.gohtml", data)
 }
 
-func (app *Application) AddPost(w http.ResponseWriter, r *http.Request) {
+func (app *Application) CreatePost(w http.ResponseWriter, r *http.Request) {
 
 	var form ReviewCreateForm
 
@@ -39,7 +33,7 @@ func (app *Application) AddPost(w http.ResponseWriter, r *http.Request) {
 		app.InfoLog.Println(form.FieldErrors)
 		data := app.NewTemplateData(r)
 		data.Form = form
-		app.render(w, http.StatusUnprocessableEntity, "add.gohtml", data)
+		app.render(w, http.StatusUnprocessableEntity, "create.gohtml", data)
 		return
 	}
 
@@ -110,6 +104,67 @@ func (app *Application) Home(w http.ResponseWriter, r *http.Request) {
 	app.render(w, http.StatusOK, "home.gohtml", data)
 }
 
-func (app *Application) Review(w http.ResponseWriter, r *http.Request) {
+func (app *Application) userSignup(w http.ResponseWriter, r *http.Request) {
 
+	data := app.NewTemplateData(r)
+	data.Form = UserSignupForm{}
+	app.render(w, http.StatusOK, "signup.gohtml", data)
+}
+
+func (app *Application) userSignupPost(w http.ResponseWriter, r *http.Request) {
+	var form UserSignupForm
+
+	err := app.decodePostForm(r, &form)
+	if err != nil {
+		app.clientError(w, http.StatusBadRequest)
+		return
+	}
+
+	app.InfoLog.Println(form.Name, form.Password, form.Email)
+
+	form.CheckFields(validator.NotBlank(form.Name), "name", "Это поле не может быть пустым")
+	form.CheckFields(validator.NotBlank(form.Email), "email", "Это поле не может быть пустым")
+	form.CheckFields(validator.Matches(form.Email, validator.EmailRX), "email", "Введен некорректный e-mail")
+	form.CheckFields(validator.NotBlank(form.Password), "password", "Это поле не может быть пустым")
+	form.CheckFields(validator.MinChars(form.Password, 8), "password", "Пароль должен быть не меньше 8 символов")
+
+	if !form.Valid() {
+		data := app.NewTemplateData(r)
+		data.Form = form
+		app.InfoLog.Println(form.FieldErrors)
+		app.render(w, http.StatusUnprocessableEntity, "signup.gohtml", data)
+		return
+	}
+
+	err = app.Users.Insert(form.Name, form.Email, form.Password)
+	if err != nil {
+		if errors.Is(err, models.ErrDuplicateEmail) {
+			form.AddFieldError("email", "Этот e-mail уже используется")
+
+			data := app.NewTemplateData(r)
+			data.Form = form
+			app.render(w, http.StatusUnprocessableEntity, "signup.gohtml", data)
+		} else {
+			app.serverError(w, err)
+		}
+
+		return
+	}
+
+	app.SessionManager.Put(r.Context(), "flash", "Регистрация завершена")
+
+	http.Redirect(w, r, "/user/login", http.StatusSeeOther)
+}
+
+func (app *Application) userLogin(w http.ResponseWriter, r *http.Request) {
+
+	data := app.NewTemplateData(r)
+	data.Form = UserLoginForm{}
+	app.render(w, http.StatusOK, "login.gohtml", data)
+}
+
+func (app *Application) userLoginPost(w http.ResponseWriter, r *http.Request) {
+}
+
+func (app *Application) userLogoutPost(w http.ResponseWriter, r *http.Request) {
 }

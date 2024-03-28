@@ -17,12 +17,27 @@ input[type="text"] {
     min-height: 200px;
 }
 
+#title {
+    background: none;
+    border: none;
+    border-bottom: 2px solid white;
+    color: white;
+
+    font-family: Bellota Text, serif;
+    font-size: 14px;
+}
+
+#title:focus-visible {
+
+    outline: none;
+}
+
 .error {
     color: #EF9A9A;
     /*background-color: white;*/
 }
 
-input,
+/*input,*/
 textarea {
     border-radius: 5px;
 }
@@ -49,7 +64,7 @@ textarea {
     border: 2px solid #2f507e;
     border-radius: 20px;
     background-color: #235789;
-    padding: 40px;
+    padding: 20px;
 
     color: white;
 }

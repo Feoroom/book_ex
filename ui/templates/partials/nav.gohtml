@@ -2,7 +2,14 @@
 <nav>
     <ul>
         <li><a href="/">Главная</a></li>
-        <li><a href="/add">Добавить обзор</a></li>
+        <li><a href="/review/create">Добавить обзор</a></li>
+        <li><a href="/user/signup">Зарегистрироваться</a></li>
+        <li><a href="/user/login">Войти</a></li>
+        <li>
+            <form action="/user/logout">
+                <button class="logout-btn">Выйти</button>
+            </form>
+        </li>
     </ul>
 </nav>
 {{end}}

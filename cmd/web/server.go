@@ -15,6 +15,7 @@ type Application struct {
 	InfoLog        *log.Logger
 	Items          *models.ItemModel
 	Reviews        *models.ReviewModel
+	Users          *models.UserModel
 	TemplateCache  map[string]*template.Template
 	FormDecoder    *form.Decoder
 	SessionManager *scs.SessionManager

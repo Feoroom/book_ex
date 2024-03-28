@@ -22,23 +22,32 @@ func (app *Application) Routes() http.Handler {
 	router.Handler(http.MethodGet, "/",
 		dynamic.ThenFunc(app.Home))
 
-	router.Handler(http.MethodGet, "/list",
-		dynamic.ThenFunc(app.List))
+	router.Handler(http.MethodGet, "/review/create",
+		dynamic.ThenFunc(app.Create))
 
-	router.Handler(http.MethodGet, "/add",
-		dynamic.ThenFunc(app.Add))
+	router.Handler(http.MethodPost, "/review/create",
+		dynamic.ThenFunc(app.CreatePost))
 
+	router.Handler(http.MethodGet, "/user/signup",
+		dynamic.ThenFunc(app.userSignup))
+
+	router.Handler(http.MethodPost, "/user/signup",
+		dynamic.ThenFunc(app.userSignupPost))
+
+	router.Handler(http.MethodGet, "/user/login",
+		dynamic.ThenFunc(app.userLogin))
+
+	router.Handler(http.MethodPost, "/user/login",
+		dynamic.ThenFunc(app.userLoginPost))
+
+	router.Handler(http.MethodPost, "/user/logout",
+		dynamic.ThenFunc(app.userLogoutPost))
+
+	//DEPRECATED
 	router.Handler(http.MethodGet, "/list/:id",
 		dynamic.ThenFunc(app.View))
-
-	router.Handler(http.MethodPost, "/add",
-		dynamic.ThenFunc(app.AddPost))
-
-	//router.HandlerFunc(http.MethodGet, "/", app.Home)
-	//router.HandlerFunc(http.MethodGet, "/list", app.List)
-	//router.HandlerFunc(http.MethodGet, "/add", app.Add)
-	//router.HandlerFunc(http.MethodGet, "/list/:id", app.View)
-	//router.HandlerFunc(http.MethodPost, "/add", app.AddPost)
+	router.Handler(http.MethodGet, "/list",
+		dynamic.ThenFunc(app.List))
 
 	return alice.New(app.recoverPanic, app.logRequest, secureHeaders).Then(router)
 }

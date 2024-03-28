@@ -3,6 +3,7 @@ package main
 import (
 	"book_ex/cmd/web"
 	"book_ex/internal/models"
+	"crypto/tls"
 	"database/sql"
 	"flag"
 	"github.com/alexedwards/scs/v2"
@@ -14,7 +15,8 @@ import (
 	"time"
 )
 
-// TODO: Add Session Store
+// TODO: Create Session Store
+// go run C:\Users\ezioe\sdk\go1.21.4\src\crypto\tls\generate_cert.go --rsa-bits=2048 --host=localhost
 func main() {
 
 	//Command-line flags
@@ -51,12 +53,18 @@ func main() {
 	sessionManager.Lifetime = time.Hour
 	sessionManager.Cookie.Secure = true
 
+	//
+	tlsConfig := &tls.Config{
+		CurvePreferences: []tls.CurveID{tls.X25519, tls.CurveP256},
+	}
+
 	//Application
 	app := &web.Application{
 		ErrorLog:       errorLog,
 		InfoLog:        infoLog,
 		Items:          &models.ItemModel{DB: db},
 		Reviews:        &models.ReviewModel{DB: db},
+		Users:          &models.UserModel{DB: db},
 		TemplateCache:  templCache,
 		FormDecoder:    formDecoder,
 		SessionManager: sessionManager,
@@ -64,9 +72,13 @@ func main() {
 
 	//Server struct
 	srv := &http.Server{
-		Addr:     *addr,
-		ErrorLog: errorLog,
-		Handler:  app.Routes(),
+		Addr:         *addr,
+		ErrorLog:     errorLog,
+		Handler:      app.Routes(),
+		TLSConfig:    tlsConfig,
+		IdleTimeout:  time.Minute,
+		ReadTimeout:  5 * time.Second,
+		WriteTimeout: 10 * time.Second,
 	}
 
 	infoLog.Printf("Starting server on: %s", *addr)

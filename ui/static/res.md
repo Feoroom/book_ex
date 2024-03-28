@@ -5,21 +5,43 @@
     <tr>
         <td>Метод</td>
         <td>Путь</td>
+        <td>Handler</td>
+        <td>Что делает</td>
     </tr>
 <tr>
     <td>GET</td>
+    <td>/</td>
+    <td></td>
     <td>/</td>
 </tr>
 
 <tr>
     <td>GET</td>
-    <td>/list</td>
+    <td>/review/view/:id</td>
+    <td></td>
+    <td>/</td>
+</tr>
+
+<tr>
+    <td>GET</td>
+    <td>/review/create</td>
+</tr>
+
+<tr>
+    <td>POST</td>
+    <td>/review/create</td>
 </tr>
 
 <tr>
     <td>GET</td>
     <td>/list/:id</td>
 </tr>
+
+<tr>
+    <td>GET</td>
+    <td>/list/:id</td>
+</tr>
+
 
 
 

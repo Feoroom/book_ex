@@ -4,6 +4,7 @@
 @import "pages/add.css";
 @import "pages/home.css";
 @import "partials/nav.css";
+@import "pages/signup.css";
 
 @import url('https://fonts.googleapis.com/css2?family=Comfortaa:wght@300..700&family=Bellota+Text:ital,wght@0,300;0,400;0,700;1,300;1,400;1,700&family=Poiret+One&display=swap');
 
@@ -31,7 +32,9 @@ footer {
 
 header {
     display: flex;
-    justify-content: space-between;
+    justify-content: center;
+    align-items: center;
+    /*padding: 0 260px*/
 }
 
 header h3 {
@@ -49,6 +52,9 @@ header img {
     justify-content: center;
     align-items: center;
     margin-left: 40px;
+
+    position: absolute;
+    left: 0;
 }
 
 /*
