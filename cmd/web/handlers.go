@@ -164,6 +164,47 @@ func (app *Application) userLogin(w http.ResponseWriter, r *http.Request) {
 }
 
 func (app *Application) userLoginPost(w http.ResponseWriter, r *http.Request) {
+
+	var form UserLoginForm
+
+	err := app.decodePostForm(r, &form)
+	if err != nil {
+		app.clientError(w, http.StatusBadRequest)
+		return
+	}
+
+	//TODO:Validation checks
+
+	if !form.Valid() {
+		data := app.NewTemplateData(r)
+		data.Form = form
+		app.render(w, http.StatusUnprocessableEntity, "login.gohtml", data)
+		return
+	}
+
+	id, err := app.Users.Authenticate(form.Email, form.Password)
+	if err != nil {
+		if errors.Is(err, models.ErrInvalidCredentials) {
+			form.AddNonFieldError("Неправильный логин или пароль")
+
+			data := app.NewTemplateData(r)
+			data.Form = form
+			app.render(w, http.StatusUnprocessableEntity, "login.gohtml", data)
+		} else {
+			app.serverError(w, err)
+		}
+		return
+	}
+
+	err = app.SessionManager.RenewToken(r.Context())
+	if err != nil {
+		app.serverError(w, err)
+		return
+	}
+
+	app.SessionManager.Put(r.Context(), "authenticatedUserID", id)
+
+	http.Redirect(w, r, "/review/create", http.StatusSeeOther)
 }
 
 func (app *Application) userLogoutPost(w http.ResponseWriter, r *http.Request) {

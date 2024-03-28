@@ -12,9 +12,9 @@
             {{with .Form.FieldErrors.email}}
                 <label class="error">{{.}}</label>
             {{end}}
-            <input type="email" name="email" placeholder="Введите логин">
+            <input type="email" name="email" placeholder="Введите e-mail">
 
-            {{with .Form.FirldErrors.password}}
+            {{with .Form.FieldErrors.password}}
                 <label class="error">{{.}}</label>
             {{end}}
             <input type="password" name="password" placeholder="Введите пароль">
