@@ -17,7 +17,14 @@
     {{template "nav" .}}
 </header>
 <main>
-    {{template "main" .}}
+   <div class="fl-cont">
+       {{with .Flash}}
+           <div class="flash">{{.}}</div>
+       {{end}}
+       <div class="main-cont">
+           {{template "main" .}}
+       </div>
+   </div>
 </main>
 
 <footer>

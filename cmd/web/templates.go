@@ -9,13 +9,14 @@ import (
 )
 
 type TemplateData struct {
-	Item        *models.Item
-	Items       []*models.Item
-	Review      *models.Review
-	Reviews     []*models.Review
-	CurrentYear int
-	Form        any
-	Flash       string
+	Review          *models.Review
+	Reviews         []*models.Review
+	Book            *models.Book
+	Books           []*models.Book
+	CurrentYear     int
+	Form            any
+	Flash           string
+	IsAuthenticated bool
 }
 
 var functions = template.FuncMap{
@@ -59,7 +60,8 @@ func (app *Application) NewTemplateData(r *http.Request) *TemplateData {
 	return &TemplateData{
 		CurrentYear: time.Now().Year(),
 		//Form:        ReviewCreateForm{},
-		Flash: app.SessionManager.PopString(r.Context(), "add"),
+		Flash:           app.SessionManager.PopString(r.Context(), flash),
+		IsAuthenticated: app.isAuthenticated(r),
 	}
 }
 

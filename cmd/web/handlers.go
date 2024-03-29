@@ -4,18 +4,22 @@ import (
 	"book_ex/internal/models"
 	"book_ex/internal/validator"
 	"errors"
-	"github.com/julienschmidt/httprouter"
 	"net/http"
-	"strconv"
 )
 
-func (app *Application) Create(w http.ResponseWriter, r *http.Request) {
+// Context keys
+const (
+	authUserID = "authenticatedUserID"
+	flash      = "flash"
+)
+
+func (app *Application) createReview(w http.ResponseWriter, r *http.Request) {
 	data := app.NewTemplateData(r)
 	data.Form = ReviewCreateForm{}
 	app.render(w, http.StatusOK, "create.gohtml", data)
 }
 
-func (app *Application) CreatePost(w http.ResponseWriter, r *http.Request) {
+func (app *Application) createReviewPost(w http.ResponseWriter, r *http.Request) {
 
 	var form ReviewCreateForm
 
@@ -43,63 +47,22 @@ func (app *Application) CreatePost(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	app.SessionManager.Put(r.Context(), "add", "Рецензия успешно создана!")
+	app.SessionManager.Put(r.Context(), flash, "Рецензия успешно создана!")
 
 	app.InfoLog.Printf("Id of inserted item is %d", id)
 	http.Redirect(w, r, "/", http.StatusSeeOther)
 }
 
-func (app *Application) List(w http.ResponseWriter, r *http.Request) {
-
-	items, err := app.Items.GetAll()
-	if err != nil {
-		app.serverError(w, err)
-		return
-	}
-
-	data := app.NewTemplateData(r)
-	data.Items = items
-	app.render(w, http.StatusOK, "list.gohtml", data)
-}
-
-func (app *Application) View(w http.ResponseWriter, r *http.Request) {
-	params := httprouter.ParamsFromContext(r.Context())
-
-	id, err := strconv.Atoi(params.ByName("id"))
-	app.InfoLog.Println(id)
-	if err != nil || id < 0 {
-		app.notFound(w)
-		return
-	}
-
-	item, err := app.Items.Get(id)
-	if err != nil {
-		if errors.Is(err, models.ErrNoRecord) {
-			app.notFound(w)
-		} else {
-			app.serverError(w, err)
-		}
-		return
-	}
-
-	data := app.NewTemplateData(r)
-	data.Item = item
-
-	app.render(w, http.StatusOK, "view_item.gohtml", data)
-
-	return
-}
-
 func (app *Application) Home(w http.ResponseWriter, r *http.Request) {
 
-	reviews, err := app.Reviews.GetAll()
+	books, err := app.Books.GetAll()
 	if err != nil {
 		app.serverError(w, err)
 		return
 	}
 
 	data := app.NewTemplateData(r)
-	data.Reviews = reviews
+	data.Books = books
 	//data.Flash = app.SessionManager.PopString(r.Context(), "add")
 	app.render(w, http.StatusOK, "home.gohtml", data)
 }
@@ -151,7 +114,7 @@ func (app *Application) userSignupPost(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	app.SessionManager.Put(r.Context(), "flash", "Регистрация завершена")
+	app.SessionManager.Put(r.Context(), flash, "Регистрация завершена")
 
 	http.Redirect(w, r, "/user/login", http.StatusSeeOther)
 }
@@ -173,7 +136,9 @@ func (app *Application) userLoginPost(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	//TODO:Validation checks
+	form.CheckFields(validator.NotBlank(form.Email), "email", "Это поле не может быть пустым")
+	form.CheckFields(validator.Matches(form.Email, validator.EmailRX), "email", "Некорректный почтовый адрес")
+	form.CheckFields(validator.NotBlank(form.Password), "password", "Это поле не может быть пустым")
 
 	if !form.Valid() {
 		data := app.NewTemplateData(r)
@@ -202,10 +167,25 @@ func (app *Application) userLoginPost(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	app.SessionManager.Put(r.Context(), "authenticatedUserID", id)
+	app.SessionManager.Put(r.Context(), authUserID, id)
 
 	http.Redirect(w, r, "/review/create", http.StatusSeeOther)
 }
 
 func (app *Application) userLogoutPost(w http.ResponseWriter, r *http.Request) {
+	err := app.SessionManager.RenewToken(r.Context())
+	if err != nil {
+		app.serverError(w, err)
+		return
+	}
+
+	app.SessionManager.Remove(r.Context(), authUserID)
+
+	app.SessionManager.Put(r.Context(), flash, "Вы успешно вышли из аккаунта!")
+
+	http.Redirect(w, r, "/", http.StatusSeeOther)
+}
+
+func (app *Application) createBook(w http.ResponseWriter, r *http.Request) {
+
 }

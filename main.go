@@ -15,7 +15,7 @@ import (
 	"time"
 )
 
-// TODO: Create Session Store
+// TODO: createReview Session Store
 // go run C:\Users\ezioe\sdk\go1.21.4\src\crypto\tls\generate_cert.go --rsa-bits=2048 --host=localhost
 func main() {
 
@@ -62,9 +62,9 @@ func main() {
 	app := &web.Application{
 		ErrorLog:       errorLog,
 		InfoLog:        infoLog,
-		Items:          &models.ItemModel{DB: db},
 		Reviews:        &models.ReviewModel{DB: db},
 		Users:          &models.UserModel{DB: db},
+		Books:          &models.BookModel{DB: db},
 		TemplateCache:  templCache,
 		FormDecoder:    formDecoder,
 		SessionManager: sessionManager,

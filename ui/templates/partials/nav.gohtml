@@ -2,14 +2,23 @@
 <nav>
     <ul>
         <li><a href="/">Главная</a></li>
-        <li><a href="/review/create">Добавить обзор</a></li>
-        <li><a href="/user/signup">Зарегистрироваться</a></li>
-        <li><a href="/user/login">Войти</a></li>
-        <li>
-            <form action="/user/logout">
-                <button class="logout-btn">Выйти</button>
-            </form>
-        </li>
+        {{if .IsAuthenticated}}
+            <li><a href="/review/create">Добавить обзор</a></li>
+        {{end}}
+
+
+        {{if .IsAuthenticated}}
+            <li>
+                <form action="/user/logout" method="post">
+                    <button class="logout-btn">Выйти</button>
+                </form>
+            </li>
+        {{else}}
+            <li><a href="/user/signup">Зарегистрироваться</a></li>
+            <li><a href="/user/login">Войти</a></li>
+        {{end}}
+
+
     </ul>
 </nav>
 {{end}}

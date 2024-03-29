@@ -1,7 +1,7 @@
 
 @import "pages/view.css";
-@import "pages/list.css";
-@import "pages/add.css";
+
+@import "pages/create.css";
 @import "pages/home.css";
 @import "partials/nav.css";
 @import "pages/signup.css";
@@ -66,6 +66,8 @@ MAIN
 main {
     display: flex;
 
+    flex-direction: row;
+
     justify-content: center;
     align-items: center;
 
@@ -74,6 +76,7 @@ main {
     /*background-color: #97D2FB;*/
 background-color: #76E5FC;
 }
+
 
 /*
 

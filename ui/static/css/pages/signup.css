@@ -3,11 +3,11 @@
     background: none;
     border: none;
     border-bottom: 2px solid white;
-    color: white; !important;
+    color: #ffffff; !important;
 
 }
 
-::-webkit-input-placeholder {    color: white !important;  }
+::-webkit-input-placeholder {    color: #ffffff !important;  }
 
 .rgstr form > * {
     margin: 15px;

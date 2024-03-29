@@ -22,12 +22,6 @@ func (app *Application) Routes() http.Handler {
 	router.Handler(http.MethodGet, "/",
 		dynamic.ThenFunc(app.Home))
 
-	router.Handler(http.MethodGet, "/review/create",
-		dynamic.ThenFunc(app.Create))
-
-	router.Handler(http.MethodPost, "/review/create",
-		dynamic.ThenFunc(app.CreatePost))
-
 	router.Handler(http.MethodGet, "/user/signup",
 		dynamic.ThenFunc(app.userSignup))
 
@@ -40,14 +34,15 @@ func (app *Application) Routes() http.Handler {
 	router.Handler(http.MethodPost, "/user/login",
 		dynamic.ThenFunc(app.userLoginPost))
 
-	router.Handler(http.MethodPost, "/user/logout",
-		dynamic.ThenFunc(app.userLogoutPost))
+	protected := dynamic.Append(app.requireAuthentication)
 
-	//DEPRECATED
-	router.Handler(http.MethodGet, "/list/:id",
-		dynamic.ThenFunc(app.View))
-	router.Handler(http.MethodGet, "/list",
-		dynamic.ThenFunc(app.List))
+	router.Handler(http.MethodGet, "/review/create",
+		protected.ThenFunc(app.createReview))
+
+	router.Handler(http.MethodPost, "/review/create",
+		protected.ThenFunc(app.createReviewPost))
+	router.Handler(http.MethodPost, "/user/logout",
+		protected.ThenFunc(app.userLogoutPost))
 
 	return alice.New(app.recoverPanic, app.logRequest, secureHeaders).Then(router)
 }

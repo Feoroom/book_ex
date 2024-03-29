@@ -3,25 +3,44 @@
 {{define "main"}}
 
 
-    <div class="show-rv">
-        {{with .Flash}}
-            <div class="flash">{{.}}</div>
-        {{end}}
-        {{range .Reviews}}
-            <div class="rev">
-                <div class="rv-hdr">
-                    <span>Title: {{.Title}}</span>
-                    <span>ID: {{.ID}}</span>
+{{/*    <div class="show-rv">*/}}
+
+{{/*        {{range .Reviews}}*/}}
+{{/*            <div class="rev">*/}}
+{{/*                <div class="rv-hdr">*/}}
+{{/*                    <span>Title: {{.Title}}</span>*/}}
+{{/*                    <span>ID: {{.ID}}</span>*/}}
+{{/*                </div>*/}}
+
+{{/*                <div class="rv-main">*/}}
+{{/*                    <p>{{.Text}}</p>*/}}
+{{/*                </div>*/}}
+
+{{/*                <div class="rv-ftr">*/}}
+{{/*                    Published: {{.Published | humanDate}}*/}}
+{{/*                </div>*/}}
+{{/*            </div>*/}}
+{{/*        {{end}}*/}}
+{{/*    </div>*/}}
+
+    <div class="show-bks">
+        {{range .Books}}
+
+            <div class="book">
+                <div class="title">
+                    {{.Title}}
+                </div>
+                <div class="author">
+                    {{.Author}}
+                </div>
+                <div class="price">
+                    {{.Price}} ₽
                 </div>
 
-                <div class="rv-main">
-                    <p>{{.Text}}</p>
-                </div>
 
-                <div class="rv-ftr">
-                    Published: {{.Published | humanDate}}
-                </div>
+                <button type="button">Купить</button>
             </div>
+
         {{end}}
     </div>
 

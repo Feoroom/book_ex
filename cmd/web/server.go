@@ -13,9 +13,9 @@ type Database map[string]int
 type Application struct {
 	ErrorLog       *log.Logger
 	InfoLog        *log.Logger
-	Items          *models.ItemModel
 	Reviews        *models.ReviewModel
 	Users          *models.UserModel
+	Books          *models.BookModel
 	TemplateCache  map[string]*template.Template
 	FormDecoder    *form.Decoder
 	SessionManager *scs.SessionManager

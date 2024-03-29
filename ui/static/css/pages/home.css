@@ -1,4 +1,8 @@
 
+/*
+ CSS FOR REVIEWS
+*/
+
 .show-rv {
     display: flex;
     flex-direction: column;
@@ -30,10 +34,66 @@
 
 }
 
+/*
+*/
+
+.show-bks {
+    display: flex;
+    flex-direction: column;
+
+    align-items: center;
+    justify-content: center;
+}
+
+.book {
+    background-color: #2f507e;
+    width: 30%;
+    min-width: 300px;
+    border-radius: 10px;
+
+    margin: 30px;
+}
+
+.book button {
+    margin: 60px auto 10px;
+    padding: 5px;
+    display: block;
+
+    width: 100px;
+    background-color: white;
+    color: black;
+
+    border: none;
+    border-radius: 10px;
+    font-family: Bellota Text, serif;
+}
+
+.book button:hover {
+    background: rgba(255, 255, 255, 0.75);
+}
+
+.book > * {
+    margin: 10px;
+}
+
+.title {
+    font-size: 20px;
+    font-weight: bold;
+}
+
+.price {
+    font-size: 20px;
+    font-weight: bold;
+}
+
 .flash {
     background-color: #13304f;
-    margin-top: 20px;
     padding: 20px;
+
+    width: 300px;
+
+    margin: 20px auto;
+    text-align: center;
 }
 
 

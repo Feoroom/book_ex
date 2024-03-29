@@ -4,7 +4,7 @@
 
     <div class="frm rgstr lgn">
 
-        <form action="/user/login" method="post">
+        <form action="/user/login" method="post" novalidate>
             {{range .Form.NonFieldErrors}}
                 <label class="error">{{.}}</label>
             {{end}}
