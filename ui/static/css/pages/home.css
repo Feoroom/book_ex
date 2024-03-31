@@ -39,25 +39,28 @@
 
 .show-bks {
     display: flex;
-    flex-direction: column;
+    /*flex-direction: column;*/
 
     align-items: center;
     justify-content: center;
 }
 
 .book {
-    background-color: #2f507e;
-    width: 30%;
-    min-width: 300px;
+    background-color: var(--bk-color);
+    width: 200px;
+    min-width: 150px;
+    height: 300px;
+    /*max-width: 400px;*/
     border-radius: 10px;
 
     margin: 30px;
 }
 
 .book button {
-    margin: 60px auto 10px;
+
     padding: 5px;
     display: block;
+    /*position: relative;*/
 
     width: 100px;
     background-color: white;
@@ -67,9 +70,35 @@
     border-radius: 10px;
     font-family: Bellota Text, serif;
 }
+.book .btns {
+    margin: 60px auto 10px;
+    display: flex;
+}
+.book .btns > * {
+    margin: 10px;
+}
 
-.book button:hover {
-    background: rgba(255, 255, 255, 0.75);
+.book .btns #buy-btn{
+    flex: 4;
+}
+
+.book .btns #fav-btn{
+    background-color: rgba(255, 255, 255, 0);
+    background-image: url("/static/images/favorite.png");
+    background-position: center;
+    background-repeat: no-repeat;
+    flex: 1;
+}
+
+.book-row {
+    height: 50%;
+}
+.btns > *:hover {
+    filter: brightness(0.9);
+}
+
+#fav-btn:hover{
+    filter: brightness(0.9);
 }
 
 .book > * {
@@ -81,13 +110,22 @@
     font-weight: bold;
 }
 
+.title a {
+    text-decoration: none;
+    color: white;
+}
+
+.title a:hover {
+    color: #76E5FC;
+}
+
 .price {
     font-size: 20px;
     font-weight: bold;
 }
 
 .flash {
-    background-color: #13304f;
+    background-color: var(--bk-color);
     padding: 20px;
 
     width: 300px;

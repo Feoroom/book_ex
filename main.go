@@ -2,10 +2,10 @@ package main
 
 import (
 	"book_ex/cmd/web"
+	"book_ex/internal/config"
 	"book_ex/internal/models"
 	"crypto/tls"
 	"database/sql"
-	"flag"
 	"github.com/alexedwards/scs/v2"
 	"github.com/go-playground/form/v4"
 	_ "github.com/lib/pq"
@@ -16,21 +16,22 @@ import (
 )
 
 // TODO: createReview Session Store
-// go run C:\Users\ezioe\sdk\go1.21.4\src\crypto\tls\generate_cert.go --rsa-bits=2048 --host=localhost
 func main() {
 
 	//Command-line flags
-	addr := flag.String("addr", ":8000", "HTTP network address")
-	flag.Parse()
+	//addr := flag.String("addr", ":8000", "HTTP network address")
+	//flag.Parse()
+
+	//Config
+
+	cfg := config.Load()
+	log.Println(cfg)
 
 	//Logging
 	infoLog := log.New(os.Stdout, "INFO\t", log.Ldate|log.Ltime)
 	errorLog := log.New(os.Stderr, "ERROR\t", log.Ldate|log.Ltime|log.Lshortfile)
 
-	//DB connection
-	connStr := "user=postgres dbname=webapp password=123 sslmode=disable"
-	//connStr := "postgres://postgres:123@localhost/webapp?sslmode=disable"
-	db, err := openDB(connStr)
+	db, err := openDB(cfg)
 	if err != nil {
 		errorLog.Fatal(err)
 	}
@@ -72,22 +73,22 @@ func main() {
 
 	//Server struct
 	srv := &http.Server{
-		Addr:         *addr,
+		Addr:         cfg.Address,
 		ErrorLog:     errorLog,
 		Handler:      app.Routes(),
 		TLSConfig:    tlsConfig,
-		IdleTimeout:  time.Minute,
-		ReadTimeout:  5 * time.Second,
-		WriteTimeout: 10 * time.Second,
+		IdleTimeout:  cfg.IdleTimeout,
+		ReadTimeout:  cfg.ReadTimeout,
+		WriteTimeout: cfg.WriteTimeout,
 	}
 
-	infoLog.Printf("Starting server on: %s", *addr)
+	infoLog.Printf("Starting server on: %s", cfg.Address)
 	err = srv.ListenAndServeTLS("./tls/cert.pem", "./tls/key.pem")
 	errorLog.Fatal(err)
 }
 
-func openDB(connStr string) (*sql.DB, error) {
-	db, err := sql.Open("postgres", connStr)
+func openDB(cfg *config.Config) (*sql.DB, error) {
+	db, err := sql.Open(cfg.Name, cfg.ConnStr)
 	if err != nil {
 		return nil, err
 	}

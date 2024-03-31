@@ -5,8 +5,15 @@
 @import "pages/home.css";
 @import "partials/nav.css";
 @import "pages/signup.css";
+@import "pages/view_book.css";
 
 @import url('https://fonts.googleapis.com/css2?family=Comfortaa:wght@300..700&family=Bellota+Text:ital,wght@0,300;0,400;0,700;1,300;1,400;1,700&family=Poiret+One&display=swap');
+
+
+:root {
+    --bk-color: #1fb9d2;
+    --bk-color-dark: #235789;
+}
 
 html{
     height: 100vh;
@@ -18,6 +25,10 @@ body {
     color: white;
 
     font-family: Bellota Text, serif;
+    /*background-color: #d9f1ff;*/
+    /*background-color: #235789;*/
+    background-color: #ffffff;
+    /*background-color: #76E5FC;*/
 }
 
 /*
@@ -27,12 +38,16 @@ HEADER
 header,
 footer {
     /*background-color: rgb(91, 145, 210);*/
-    background-color: #235789;
+    /*background-color: #235789;*/
+    /*background-color: #76E5FC;*/
+
+    background-color: var(--bk-color);
+
 }
 
 header {
     display: flex;
-    justify-content: center;
+    justify-content: end;
     align-items: center;
     /*padding: 0 260px*/
 }
@@ -64,6 +79,15 @@ MAIN
 */
 
 main {
+
+
+    min-height: 90vh;
+    /*background-color: rgb(185, 218, 253);*/
+    /*background-color: #97D2FB;*/
+/*background-color: #76E5FC;*/
+}
+
+.center {
     display: flex;
 
     flex-direction: row;
@@ -71,10 +95,7 @@ main {
     justify-content: center;
     align-items: center;
 
-    min-height: 90vh;
-    /*background-color: rgb(185, 218, 253);*/
-    /*background-color: #97D2FB;*/
-background-color: #76E5FC;
+    height: 100vh;
 }
 
 

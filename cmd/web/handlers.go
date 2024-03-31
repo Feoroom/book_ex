@@ -4,19 +4,22 @@ import (
 	"book_ex/internal/models"
 	"book_ex/internal/validator"
 	"errors"
+	"github.com/julienschmidt/httprouter"
 	"net/http"
+	"strconv"
 )
 
 // Context keys
 const (
 	authUserID = "authenticatedUserID"
 	flash      = "flash"
+	user       = "user"
 )
 
 func (app *Application) createReview(w http.ResponseWriter, r *http.Request) {
 	data := app.NewTemplateData(r)
 	data.Form = ReviewCreateForm{}
-	app.render(w, http.StatusOK, "create.gohtml", data)
+	app.render(w, http.StatusOK, "create_review.gohtml", data)
 }
 
 func (app *Application) createReviewPost(w http.ResponseWriter, r *http.Request) {
@@ -37,7 +40,7 @@ func (app *Application) createReviewPost(w http.ResponseWriter, r *http.Request)
 		app.InfoLog.Println(form.FieldErrors)
 		data := app.NewTemplateData(r)
 		data.Form = form
-		app.render(w, http.StatusUnprocessableEntity, "create.gohtml", data)
+		app.render(w, http.StatusUnprocessableEntity, "create_book.gohtml", data)
 		return
 	}
 
@@ -167,6 +170,7 @@ func (app *Application) userLoginPost(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
+	app.InfoLog.Println(id)
 	app.SessionManager.Put(r.Context(), authUserID, id)
 
 	http.Redirect(w, r, "/review/create", http.StatusSeeOther)
@@ -187,5 +191,34 @@ func (app *Application) userLogoutPost(w http.ResponseWriter, r *http.Request) {
 }
 
 func (app *Application) createBook(w http.ResponseWriter, r *http.Request) {
+
+}
+
+func (app *Application) viewBook(w http.ResponseWriter, r *http.Request) {
+
+	params := httprouter.ParamsFromContext(r.Context())
+
+	id, err := strconv.Atoi(params.ByName("id"))
+	if err != nil || id < 1 {
+		app.InfoLog.Println(id)
+		app.notFound(w)
+		return
+	}
+
+	book, err := app.Books.Get(id)
+	if err != nil {
+		if errors.Is(err, models.ErrNoRecord) {
+			app.ErrorLog.Print(err)
+			app.notFound(w)
+		} else {
+			app.serverError(w, err)
+		}
+		return
+	}
+
+	data := app.NewTemplateData(r)
+	data.Book = book
+
+	app.render(w, http.StatusOK, "view_book.gohtml", data)
 
 }

@@ -2,20 +2,33 @@
 <nav>
     <ul>
         <li><a href="/">Главная</a></li>
+        <li>
+            <img src="/static/images/order-2.png" alt="">
+            <a href="/user/order">Заказы</a>
+        </li>
+        <li>
+            <img src="/static/images/cart.png" alt="">
+            <a href="/user/cart">Корзина</a>
+        </li>
         {{if .IsAuthenticated}}
             <li><a href="/review/create">Добавить обзор</a></li>
-        {{end}}
-
-
-        {{if .IsAuthenticated}}
+            <li>
+                <img src="/static/images/login-person-white.png" alt="">
+                <a href="/user/login">Пользователь#{{.UserID}}</a>
+            </li>
             <li>
                 <form action="/user/logout" method="post">
                     <button class="logout-btn">Выйти</button>
                 </form>
             </li>
         {{else}}
-            <li><a href="/user/signup">Зарегистрироваться</a></li>
-            <li><a href="/user/login">Войти</a></li>
+{{/*            <li><a href="/user/signup">Зарегистрироваться</a></li>*/}}
+
+<li>
+    <img src="/static/images/login-person-white.png" alt="">
+    <a href="/user/login">Войти</a>
+</li>
+
         {{end}}
 
 

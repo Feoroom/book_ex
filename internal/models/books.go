@@ -30,7 +30,7 @@ func (m *BookModel) Insert(title, author, description string, publicationYear, p
 	return nil
 }
 
-func (m *BookModel) Get(title string) (*Book, error) {
+func (m *BookModel) GetByTitle(title string) (*Book, error) {
 
 	book := &Book{}
 
@@ -50,8 +50,29 @@ func (m *BookModel) Get(title string) (*Book, error) {
 	return book, nil
 }
 
+func (m *BookModel) Get(id int) (*Book, error) {
+
+	book := &Book{}
+
+	row := m.DB.QueryRow(`select id, title, author, description, publication_year,
+       			page_quantity, price from books where id = $1`, id)
+
+	err := row.Scan(&book.ID, &book.Title, &book.Author, &book.Description,
+		&book.PublicationYear, &book.PageQuantity, &book.Price)
+	if err != nil {
+		if errors.Is(err, sql.ErrNoRows) {
+			return nil, ErrNoRecord
+		} else {
+			return nil, err
+		}
+	}
+
+	return book, nil
+}
+
 func (m *BookModel) GetAll() ([]*Book, error) {
 
+	//TODO:Убрать ненужные поля (используются только title, author, price)
 	rows, err := m.DB.Query(`select id, title, author, description, publication_year,
        			page_quantity, price from books`)
 	if err != nil {

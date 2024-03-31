@@ -17,6 +17,7 @@ type TemplateData struct {
 	Form            any
 	Flash           string
 	IsAuthenticated bool
+	UserID          int
 }
 
 var functions = template.FuncMap{
@@ -62,6 +63,7 @@ func (app *Application) NewTemplateData(r *http.Request) *TemplateData {
 		//Form:        ReviewCreateForm{},
 		Flash:           app.SessionManager.PopString(r.Context(), flash),
 		IsAuthenticated: app.isAuthenticated(r),
+		UserID:          app.SessionManager.GetInt(r.Context(), authUserID),
 	}
 }
 

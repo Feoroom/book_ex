@@ -4,6 +4,7 @@ nav ul {
 
     /*justify-content: space-around;*/
     justify-content: center;
+    align-items: center;
     padding: 0;
     margin: 0;
 }
@@ -11,6 +12,24 @@ nav ul {
 nav li {
     list-style-type: none;
     padding: 20px;
+
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+}
+
+nav li img {
+    height: 30px;
+    width: 30px;
+
+}
+
+nav li:hover img {
+    filter: grayscale(20%);
+}
+
+nav img + a {
+    font-size: 12px;
 }
 
 nav a {
@@ -18,7 +37,7 @@ nav a {
     color: white;
 }
 
-nav a:hover {
+nav li:hover a {
     color: #76E5FC;
 }
 

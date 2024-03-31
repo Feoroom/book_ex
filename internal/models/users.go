@@ -50,10 +50,9 @@ func (um *UserModel) Authenticate(email, password string) (int, error) {
 
 	err := um.DB.QueryRow(`select id, hashed_password 
 			from users where email = $1`, email).Scan(&id, &hashedPassword)
-
 	if err != nil {
 		if errors.Is(err, sql.ErrNoRows) {
-			return 0, nil
+			return 0, ErrInvalidCredentials
 		} else {
 			return 0, err
 		}

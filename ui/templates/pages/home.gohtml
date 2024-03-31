@@ -22,23 +22,27 @@
 {{/*            </div>*/}}
 {{/*        {{end}}*/}}
 {{/*    </div>*/}}
-
     <div class="show-bks">
+        <h2></h2>
         {{range .Books}}
 
             <div class="book">
-                <div class="title">
-                    {{.Title}}
-                </div>
-                <div class="author">
-                    {{.Author}}
-                </div>
+               <div class="book-row">
+                   <div class="title">
+                       <a href="book/view/{{.ID}}">{{.Title}}</a>
+                   </div>
+                   <div class="author">
+                       {{.Author}}
+                   </div>
+               </div>
                 <div class="price">
                     {{.Price}} ₽
                 </div>
 
-
-                <button type="button">Купить</button>
+                <div class="btns">
+                    <button  type="button" id="buy-btn">Купить</button>
+                    <button id="fav-btn"></button>
+                </div>
             </div>
 
         {{end}}

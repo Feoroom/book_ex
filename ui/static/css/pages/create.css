@@ -61,9 +61,9 @@ textarea {
 }
 
 .frm {
-    border: 2px solid #2f507e;
+    /*border: 2px solid #2f507e;*/
     border-radius: 20px;
-    background-color: #235789;
+    background-color: var(--bk-color);
     padding: 20px;
 
     color: #ffffff;

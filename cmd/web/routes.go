@@ -34,6 +34,9 @@ func (app *Application) Routes() http.Handler {
 	router.Handler(http.MethodPost, "/user/login",
 		dynamic.ThenFunc(app.userLoginPost))
 
+	router.Handler(http.MethodGet, "/book/view/:id",
+		dynamic.ThenFunc(app.viewBook))
+
 	protected := dynamic.Append(app.requireAuthentication)
 
 	router.Handler(http.MethodGet, "/review/create",
