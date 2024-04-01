@@ -17,16 +17,34 @@ const (
 )
 
 func (app *Application) createReview(w http.ResponseWriter, r *http.Request) {
+	params := httprouter.ParamsFromContext(r.Context())
+
+	bookID, err := strconv.Atoi(params.ByName("id"))
+	if err != nil || bookID < 1 {
+		app.InfoLog.Println(bookID)
+		app.notFound(w)
+		return
+	}
+
 	data := app.NewTemplateData(r)
-	data.Form = ReviewCreateForm{}
+	data.Form = ReviewCreateForm{BookID: bookID}
 	app.render(w, http.StatusOK, "create_review.gohtml", data)
 }
 
 func (app *Application) createReviewPost(w http.ResponseWriter, r *http.Request) {
 
+	params := httprouter.ParamsFromContext(r.Context())
+
+	bookID, err := strconv.Atoi(params.ByName("id"))
+	if err != nil || bookID < 1 {
+		app.InfoLog.Println(bookID)
+		app.notFound(w)
+		return
+	}
+
 	var form ReviewCreateForm
 
-	err := app.decodePostForm(r, &form)
+	err = app.decodePostForm(r, &form)
 	if err != nil {
 		app.clientError(w, http.StatusBadRequest)
 	}
@@ -44,7 +62,7 @@ func (app *Application) createReviewPost(w http.ResponseWriter, r *http.Request)
 		return
 	}
 
-	id, err := app.Reviews.Insert(form.Title, form.Text)
+	id, err := app.Reviews.Insert(form.Title, form.Text, bookID)
 	if err != nil {
 		app.serverError(w, err)
 		return
@@ -173,7 +191,7 @@ func (app *Application) userLoginPost(w http.ResponseWriter, r *http.Request) {
 	app.InfoLog.Println(id)
 	app.SessionManager.Put(r.Context(), authUserID, id)
 
-	http.Redirect(w, r, "/review/create", http.StatusSeeOther)
+	http.Redirect(w, r, "/", http.StatusSeeOther)
 }
 
 func (app *Application) userLogoutPost(w http.ResponseWriter, r *http.Request) {
@@ -216,8 +234,20 @@ func (app *Application) viewBook(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
+	reviews, err := app.Reviews.GetAll(id)
+	if err != nil {
+		if errors.Is(err, models.ErrNoRecord) {
+			app.ErrorLog.Print(err)
+			app.notFound(w)
+		} else {
+			app.serverError(w, err)
+		}
+		return
+	}
+
 	data := app.NewTemplateData(r)
 	data.Book = book
+	data.Reviews = reviews
 
 	app.render(w, http.StatusOK, "view_book.gohtml", data)
 

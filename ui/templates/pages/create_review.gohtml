@@ -3,7 +3,7 @@
 {{define "main"}}
 <div class="center">
     <div class="frm">
-        <form action="/review/create" method="post">
+        <form action="/review/create/book/{{.Form.BookID}}" method="post">
             <label for="title"></label>
             {{with .Form.FieldErrors.title}}
                 <label for="title" class="error">{{.}}</label>

@@ -11,6 +11,7 @@ type Review struct {
 	Title     string
 	Text      string
 	Published time.Time
+	BookID    int
 }
 
 type ReviewModel struct {
@@ -36,10 +37,10 @@ func (rm *ReviewModel) Get(id int) (*Review, error) {
 	return review, nil
 }
 
-func (rm *ReviewModel) GetAll() ([]*Review, error) {
+func (rm *ReviewModel) GetAll(bookID int) ([]*Review, error) {
 
 	rows, err := rm.DB.Query(`SELECT id, title, text, published
-			FROM reviews`)
+			FROM reviews where book_id=$1`, bookID)
 	if err != nil {
 		return nil, err
 	}
@@ -63,11 +64,17 @@ func (rm *ReviewModel) GetAll() ([]*Review, error) {
 	return reviews, nil
 }
 
-func (rm *ReviewModel) Insert(title, text string) (int, error) {
+// TODO
+func (rm *ReviewModel) ReviewsByBookTitle(title string) (*[]Review, error) {
+
+	return nil, nil
+}
+
+func (rm *ReviewModel) Insert(title, text string, bookID int) (int, error) {
 
 	id := 0
-	err := rm.DB.QueryRow(`insert into reviews (title, text, published)
-			values ($1, $2, now()) returning id`, title, text).Scan(&id)
+	err := rm.DB.QueryRow(`insert into reviews (title, text, published, book_id)
+			values ($1, $2, now(), $3) returning id`, title, text, bookID).Scan(&id)
 	if err != nil {
 		return 0, err
 	}

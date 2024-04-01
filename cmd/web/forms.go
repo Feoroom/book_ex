@@ -5,6 +5,7 @@ import "book_ex/internal/validator"
 type ReviewCreateForm struct {
 	Title               string `form:"title"`
 	Text                string `form:"text"`
+	BookID              int    `form:"-"`
 	validator.Validator `form:"-"`
 }
 

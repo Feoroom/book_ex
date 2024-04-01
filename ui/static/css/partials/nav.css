@@ -29,8 +29,17 @@ nav li:hover img {
 }
 
 nav img + a {
+    text-align: center;
+    display: block;
     font-size: 12px;
+    /*max-width: 40px;*/
+    width: 50px;
+    word-break: break-word;
+
 }
+
+
+
 
 nav a {
     text-decoration: none;
@@ -46,7 +55,7 @@ nav li:hover a {
     border: none;
     color: white;
     font-family: Bellota Text, serif;
-    font-size: 16px;
+    font-size: 12px;
     padding: 0;
 }
 .logout-btn:hover {

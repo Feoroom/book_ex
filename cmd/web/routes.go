@@ -39,10 +39,10 @@ func (app *Application) Routes() http.Handler {
 
 	protected := dynamic.Append(app.requireAuthentication)
 
-	router.Handler(http.MethodGet, "/review/create",
+	router.Handler(http.MethodGet, "/review/create/book/:id",
 		protected.ThenFunc(app.createReview))
 
-	router.Handler(http.MethodPost, "/review/create",
+	router.Handler(http.MethodPost, "/review/create/book/:id",
 		protected.ThenFunc(app.createReviewPost))
 	router.Handler(http.MethodPost, "/user/logout",
 		protected.ThenFunc(app.userLogoutPost))
