@@ -10,6 +10,7 @@ import (
 )
 
 // Context keys
+
 const (
 	authUserID = "authenticatedUserID"
 	flash      = "flash"
@@ -17,6 +18,7 @@ const (
 )
 
 func (app *Application) createReview(w http.ResponseWriter, r *http.Request) {
+	//TODO: Возможно есть другой способ передать ID книги
 	params := httprouter.ParamsFromContext(r.Context())
 
 	bookID, err := strconv.Atoi(params.ByName("id"))
@@ -233,7 +235,7 @@ func (app *Application) viewBook(w http.ResponseWriter, r *http.Request) {
 		}
 		return
 	}
-
+	app.InfoLog.Println(id)
 	reviews, err := app.Reviews.GetAll(id)
 	if err != nil {
 		if errors.Is(err, models.ErrNoRecord) {
